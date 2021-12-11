@@ -5,15 +5,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
-@if (roleId != null)
-{
-    <p style="background-color:red">Hello @roleId</p>
 
-}
-else
-{
-<p style="background-color:forestgreen">Hello pyar</p>
-}
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     @if (leftNavs == null)
     {

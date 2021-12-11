@@ -21,7 +21,7 @@
 </div>
 @code {
     private bool collapseNavMenu = true;
-    private string roleId="Raju";
+    private string roleId = "Raju";
 
     private RoleData[] roleDatas;
     [Parameter]
@@ -37,6 +37,7 @@
         if (selectedroleId != null)
         {
             roleId = selectedroleId;
+            var data = roleDatas.FirstOrDefault(s => s.RoleId == Convert.ToInt32(selectedroleId));
             StateHasChanged();
         }
     }
