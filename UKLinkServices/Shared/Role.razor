@@ -1,4 +1,5 @@
 ﻿@inject HttpClient Http
+ 
 <div>
     @if (roleDatas == null)
     {
@@ -7,7 +8,7 @@
     else
     {
         <select class="form-control" @onchange="RoleSelection">
-            <option value="">-- Select Role --</option>
+            
             @foreach (var role in roleDatas)
             {
                 <option value="@role.RoleId">@role.Role</option>
@@ -29,6 +30,7 @@
         if (roleEvent != null)
         {
             RoleChange(roleEvent.Value.ToString());
+            
         }
     }
 }

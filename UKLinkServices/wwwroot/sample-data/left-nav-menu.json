@@ -3,25 +3,29 @@
     "menuid": 1,
     "href": "",
     "menuName": "Home",
-    "className": "oi oi-home"
+    "className": "oi oi-home",
+    "roleid": [ 1 ]
   },
 
   {
     "menuid": 2,
     "href": "dmsp",
     "menuName": "DMSP",
-    "className": "oi oi-info"
+    "className": "oi oi-info",
+    "roleid": [ 1,2 ]
   },
   {
     "menuid": 3,
     "href": "network",
     "menuName": "Network",
-    "className": "oi oi-shield"
+    "className": "oi oi-shield",
+    "roleid": [ 1 ,3]
   },
   {
     "menuid": 4,
     "href": "shipper",
     "menuName": "Shipper",
-    "className": "oi oi-rss"
+    "className": "oi oi-rss",
+    "roleid": [ 1,4 ]
   }
 ]

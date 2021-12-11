@@ -1,8 +1,10 @@
 ﻿@inherits LayoutComponentBase
 @inject HttpClient Http
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
 <div class="page">
     <div class="sidebar">
-        <NavMenu roleId="@roleId" />
+        <NavMenu filterleftNavs="@filterleftNavs" />
     </div>
     <div class="main">
         <div class="content px-4 ">
@@ -21,24 +23,52 @@
 </div>
 @code {
     private bool collapseNavMenu = true;
-    private string roleId = "Raju";
-
+    public List<LeftNavMenu> store;
+    private List<LeftNavMenu> leftNavs;
     private RoleData[] roleDatas;
     [Parameter]
-    public Action<int> FilterRole { get; set; }
+    public List<LeftNavMenu> filterleftNavs { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-
+        leftNavs = await Http.GetFromJsonAsync<List<LeftNavMenu>>("sample-data/left-nav-menu.json");
+        await sessionStorage.SetItemAsync("Role", "roleDatas");
         roleDatas = await Http.GetFromJsonAsync<RoleData[]>("sample-data/role-data.json");
+
+        filterleftNavs = leftNavs;
     }
+
+
+
     void RoleChange(string selectedroleId)
     {
-        if (selectedroleId != null)
+        if (!string.IsNullOrWhiteSpace(selectedroleId ))
         {
-            roleId = selectedroleId;
-            var data = roleDatas.FirstOrDefault(s => s.RoleId == Convert.ToInt32(selectedroleId));
+            if (store == null)
+            {
+                store = new List<LeftNavMenu>();
+
+                for (var i = 0; i < leftNavs.Count; i++)
+                {
+                    var menu = leftNavs[i];
+                    store.Add(new LeftNavMenu { menuName = menu.menuName, RoleId = menu.RoleId, className = menu.className, href = menu.href, MenueId = menu.MenueId });
+
+                }
+            }
+            filterleftNavs.Clear();
+            filterleftNavs.TrimExcess();
+
+            for (var i = 0; i < store.Count; i++)
+            {
+                var menu = store[i];
+                if (Array.IndexOf(menu.RoleId, Convert.ToInt32(selectedroleId)) >= 0)
+                {
+                    filterleftNavs.Add(new LeftNavMenu { menuName = menu.menuName, RoleId = menu.RoleId, className = menu.className, href = menu.href, MenueId = menu.MenueId });
+                }
+
+            }
             StateHasChanged();
         }
+        
     }
 }

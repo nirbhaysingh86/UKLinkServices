@@ -6,11 +6,16 @@
   },
   {
     "roleid": 2,
-    "role": "Network Engineer",
-    "menuName": [ "network"]
+    "role": "DMSP",
+    "menuName": [ "dmsp" ]
   },
   {
     "roleid": 3,
+    "role": "Network Engineer",
+    "menuName": [ "network" ]
+  },
+  {
+    "roleid": 4,
     "role": "Shipper",
     "menuName": [ "shipper" ]
   }

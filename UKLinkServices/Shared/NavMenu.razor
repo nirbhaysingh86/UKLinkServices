@@ -1,4 +1,5 @@
 ﻿@inject HttpClient Http
+
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">UKLinkServices</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -7,7 +8,7 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    @if (leftNavs == null)
+    @if (filterleftNavs == null)
     {
         <p><em>Loading...</em></p>
     }
@@ -15,7 +16,7 @@
     {
         <ul class="nav flex-column">
 
-            @foreach (var leftNav in leftNavs)
+            @foreach (var leftNav in filterleftNavs)
             {
                 <li class="nav-item px-3">
                     @if (leftNav.href == "")
@@ -41,28 +42,14 @@
 @code {
     private bool collapseNavMenu = true;
 
-    private LeftNavMenu[] leftNavs;
+
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
     [Parameter]
-    public string roleId { get; set; }
+    public List<LeftNavMenu> filterleftNavs { get; set; }
+ 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        leftNavs = await Http.GetFromJsonAsync<LeftNavMenu[]>("sample-data/left-nav-menu.json");
-
-    }
-
-     
-
-    void onclick(string selectedroleId)
-    {
-        if (selectedroleId != null)
-        {
-            roleId = selectedroleId;
-        }
-    }
 }
