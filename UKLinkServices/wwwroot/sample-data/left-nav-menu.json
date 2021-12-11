@@ -1,0 +1,27 @@
+﻿[
+  {
+    "menuid": 1,
+    "href": "",
+    "menuName": "Home",
+    "className": "oi oi-home"
+  },
+
+  {
+    "menuid": 2,
+    "href": "dmsp",
+    "menuName": "DMSP",
+    "className": "oi oi-info"
+  },
+  {
+    "menuid": 3,
+    "href": "network",
+    "menuName": "Network",
+    "className": "oi oi-shield"
+  },
+  {
+    "menuid": 4,
+    "href": "shipper",
+    "menuName": "Shipper",
+    "className": "oi oi-rss"
+  }
+]
