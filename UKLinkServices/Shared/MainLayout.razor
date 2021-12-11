@@ -32,7 +32,7 @@
     protected override async Task OnInitializedAsync()
     {
         leftNavs = await Http.GetFromJsonAsync<List<LeftNavMenu>>("sample-data/left-nav-menu.json");
-        await sessionStorage.SetItemAsync("Role", "roleDatas");
+         
         roleDatas = await Http.GetFromJsonAsync<RoleData[]>("sample-data/role-data.json");
 
         filterleftNavs = leftNavs;
