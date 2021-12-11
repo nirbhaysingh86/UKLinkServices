@@ -4,11 +4,12 @@
 
 <div class="page">
     <div class="sidebar">
-        <NavMenu filterleftNavs="@filterleftNavs" />
+        <NavMenu filterleftNavs="@filterleftNavs"  SelectedMenu="@SelectedMenu" />
     </div>
     <div class="main">
         <div class="content px-4 ">
-            <UKLinkHeader></UKLinkHeader>
+           
+            <UKLinkHeader filterleftNavs="@filterleftNavs" selectedLeftNav="@selectedLeftNav"></UKLinkHeader>
         </div>
         <div class="content px-4">
             <Role roleDatas="@roleDatas" RoleChange="@RoleChange"></Role>
@@ -23,26 +24,32 @@
 </div>
 @code {
     private bool collapseNavMenu = true;
+    private string selectedLeftNav;
     public List<LeftNavMenu> store;
     private List<LeftNavMenu> leftNavs;
     private RoleData[] roleDatas;
+    [Parameter]
+    public string Text { get; set; }
     [Parameter]
     public List<LeftNavMenu> filterleftNavs { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         leftNavs = await Http.GetFromJsonAsync<List<LeftNavMenu>>("sample-data/left-nav-menu.json");
-         
+
         roleDatas = await Http.GetFromJsonAsync<RoleData[]>("sample-data/role-data.json");
 
         filterleftNavs = leftNavs;
     }
 
-
+    void SelectedMenu(string selectedNav)
+    {
+        selectedLeftNav = selectedNav;
+    }
 
     void RoleChange(string selectedroleId)
     {
-        if (!string.IsNullOrWhiteSpace(selectedroleId ))
+        if (!string.IsNullOrWhiteSpace(selectedroleId))
         {
             if (store == null)
             {
@@ -69,6 +76,6 @@
             }
             StateHasChanged();
         }
-        
+
     }
 }

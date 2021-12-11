@@ -1,14 +1,18 @@
-﻿ 
-<header >
+﻿
+<header>
     <div class="container">
         <div class="row">
-            <Breadcrumb></Breadcrumb>
+            <Breadcrumb filterleftNavs="@filterleftNavs" selectedLeftNav="@selectedLeftNav"></Breadcrumb>
         </div>
-       
+
     </div>
 </header>
 
 @code {
     [Parameter]
     public string Title { get; set; }
+    [Parameter]
+    public string selectedLeftNav { get; set; }
+    [Parameter]
+    public List<LeftNavMenu> filterleftNavs { get; set; }
 }
