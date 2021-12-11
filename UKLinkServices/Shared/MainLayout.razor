@@ -1,20 +1,43 @@
 ﻿@inherits LayoutComponentBase
-
+@inject HttpClient Http
 <div class="page">
     <div class="sidebar">
-        <NavMenu />
+        <NavMenu roleId="@roleId" />
     </div>
     <div class="main">
-        <div class="content px-4">
-            <Header></Header>
+        <div class="content px-4 ">
+            <UKLinkHeader></UKLinkHeader>
         </div>
         <div class="content px-4">
+            <Role roleDatas="@roleDatas" RoleChange="@RoleChange"></Role>
             @Body
         </div>
         <div class="content px-4">
             <Footer></Footer>
         </div>
-        
+
     </div>
 
 </div>
+@code {
+    private bool collapseNavMenu = true;
+    private string roleId="Raju";
+
+    private RoleData[] roleDatas;
+    [Parameter]
+    public Action<int> FilterRole { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        roleDatas = await Http.GetFromJsonAsync<RoleData[]>("sample-data/role-data.json");
+    }
+    void RoleChange(string selectedroleId)
+    {
+        if (selectedroleId != null)
+        {
+            roleId = selectedroleId;
+            StateHasChanged();
+        }
+    }
+}

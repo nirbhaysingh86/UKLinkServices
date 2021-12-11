@@ -1,16 +1,16 @@
 ﻿[
   {
-    "roleid": "1",
+    "roleid": 1,
     "role": "Admin",
     "menuName": [ "dmsp", "network", "shipper" ]
   },
   {
-    "roleid": "2",
+    "roleid": 2,
     "role": "Network Engineer",
     "menuName": [ "network"]
   },
   {
-    "roleid": "3",
+    "roleid": 3,
     "role": "Shipper",
     "menuName": [ "shipper" ]
   }

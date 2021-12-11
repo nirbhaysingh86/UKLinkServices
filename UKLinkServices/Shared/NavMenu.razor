@@ -5,7 +5,15 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
+@if (roleId != null)
+{
+    <p style="background-color:red">Hello @roleId</p>
 
+}
+else
+{
+<p style="background-color:forestgreen">Hello pyar</p>
+}
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     @if (leftNavs == null)
     {
@@ -40,19 +48,29 @@
 
 @code {
     private bool collapseNavMenu = true;
-    private RoleData[] roleDatas;
+
     private LeftNavMenu[] leftNavs;
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
+    [Parameter]
+    public string roleId { get; set; }
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
 
-
     protected override async Task OnInitializedAsync()
     {
         leftNavs = await Http.GetFromJsonAsync<LeftNavMenu[]>("sample-data/left-nav-menu.json");
-        roleDatas = await Http.GetFromJsonAsync<RoleData[]>("sample-data/role-data.json");
+
+    }
+
+     
+
+    void onclick(string selectedroleId)
+    {
+        if (selectedroleId != null)
+        {
+            roleId = selectedroleId;
+        }
     }
 }
