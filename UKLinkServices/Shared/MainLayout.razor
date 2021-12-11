@@ -8,7 +8,7 @@
     </div>
     <div class="main">
         <div class="content px-4 ">
-            <UKLinkHeader filterleftNavs="@filterleftNavs" selectedLeftNav="@selectedLeftNav"></UKLinkHeader>
+            <UKLinkHeader filterleftNavs="@filterleftNavs"></UKLinkHeader>
         </div>
         <div class="content px-4">
             <Role roleDatas="@roleDatas" RoleChange="@RoleChange"></Role>
@@ -27,7 +27,7 @@
     public List<LeftNavMenu> store;
     private List<LeftNavMenu> leftNavs;
     private RoleData[] roleDatas;
-    
+
     [Parameter]
     public List<LeftNavMenu> filterleftNavs { get; set; }
 
@@ -38,11 +38,33 @@
         roleDatas = await Http.GetFromJsonAsync<RoleData[]>("sample-data/role-data.json");
 
         filterleftNavs = leftNavs;
+        leftNavMenus(true);
     }
 
     void SelectedMenu(string selectedNav)
     {
         selectedLeftNav = selectedNav;
+        leftNavMenus(false);
+    }
+
+    List<LeftNavMenu> leftNavMenus(bool initialLoad)
+    {
+        foreach (var leftNav in filterleftNavs)
+        {
+            if (initialLoad && leftNav.menuName=="Home")
+            {
+                 leftNav.BreadcrumbclassName = "completed";
+            }
+            else if (selectedLeftNav == leftNav.menuName)
+            {
+                leftNav.BreadcrumbclassName = "completed";
+            }
+            else
+            {
+                leftNav.BreadcrumbclassName = "";
+            }
+        }
+        return filterleftNavs;
     }
 
     void RoleChange(string selectedroleId)

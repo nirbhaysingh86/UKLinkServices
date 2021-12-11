@@ -9,12 +9,11 @@ namespace UKLinkServices.Models
     {
 
         public int MenueId { get; set; }
-
         public string href { get; set; }
-
         public string menuName { get; set; }
         public string className { get; set; }
         public int[] RoleId { get; set; }
+        public string BreadcrumbclassName { get; set; } 
 
     }
 }
