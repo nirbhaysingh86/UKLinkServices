@@ -4,11 +4,10 @@
 
 <div class="page">
     <div class="sidebar">
-        <NavMenu filterleftNavs="@filterleftNavs"  SelectedMenu="@SelectedMenu" />
+        <NavMenu filterleftNavs="@filterleftNavs" SelectedMenu="@SelectedMenu" />
     </div>
     <div class="main">
         <div class="content px-4 ">
-           
             <UKLinkHeader filterleftNavs="@filterleftNavs" selectedLeftNav="@selectedLeftNav"></UKLinkHeader>
         </div>
         <div class="content px-4">
@@ -24,12 +23,11 @@
 </div>
 @code {
     private bool collapseNavMenu = true;
-    private string selectedLeftNav;
+    private string selectedLeftNav = "Home";
     public List<LeftNavMenu> store;
     private List<LeftNavMenu> leftNavs;
     private RoleData[] roleDatas;
-    [Parameter]
-    public string Text { get; set; }
+    
     [Parameter]
     public List<LeftNavMenu> filterleftNavs { get; set; }
 

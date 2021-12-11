@@ -9,19 +9,41 @@
             <ul class="breadcrumb wizard">
                 @foreach (var leftNav in filterleftNavs)
                 {
-                    <li class="completed"><a href="@leftNav.href">@leftNav.menuName</a></li>
+                    <li class="@CssClass(@leftNav.menuName)"><a href="@leftNav.href" @onclick="@((e) => ToggleNavMenu(@leftNav.menuName))">@leftNav.menuName</a></li>
                 }
-                
+
             </ul>
         }
-    </div><p>@selectedLeftNav</p>
+    </div>
 </div>
 
 @code {
+    private string selectedNavText;
     [Parameter]
     public string Title { get; set; }
     [Parameter]
     public string selectedLeftNav { get; set; }
     [Parameter]
     public List<LeftNavMenu> filterleftNavs { get; set; }
+
+    string CssClass(string menuName)
+    {
+            if (menuName == selectedLeftNav)
+            {
+                return "completed";
+            }
+            else
+            {
+                return " ";
+            }
+        
+    }
+
+    private void ToggleNavMenu(string leftMenuText)
+    {
+        selectedNavText = leftMenuText;
+        selectedLeftNav = leftMenuText;
+        // CssClass(leftMenuText);
+
+    }
 }

@@ -2,12 +2,12 @@
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">UKLinkServices</a>
-    <button class="navbar-toggler"   @onclick="@((e) => ToggleNavMenu(""))">
+    <button class="navbar-toggler" @onclick="@((e) => ToggleNavMenu(""))">
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
 
-<div class="@NavMenuCssClass"  >
+<div class="@NavMenuCssClass">
     @if (filterleftNavs == null)
     {
         <p><em>Loading...</em></p>
@@ -21,13 +21,13 @@
                 <li class="nav-item px-3" @onclick="@((e) => ToggleNavMenu(@leftNav.menuName))">
                     @if (leftNav.href == "")
                     {
-                        <NavLink class="nav-link" href="" Match="NavLinkMatch.All" >
-                            <span class="@leftNav.className" aria-hidden="true" ></span> @leftNav.menuName
+                        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                            <span class="@leftNav.className" aria-hidden="true"></span> @leftNav.menuName
                         </NavLink>}
                     else
                     {
 
-                        <NavLink class="nav-link" href="@leftNav.href"    >
+                        <NavLink class="nav-link" href="@leftNav.href">
                             <span class="@leftNav.className" aria-hidden="true"></span> @leftNav.menuName
                         </NavLink>
 
@@ -41,20 +41,17 @@
 
 @code {
     private bool collapseNavMenu = true;
-
-    private ChangeEventArgs changeEventArgs ;
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
     [Parameter]
     public List<LeftNavMenu> filterleftNavs { get; set; }
-
-
     [Parameter]
     public Action<string> SelectedMenu { get; set; }
 
-    private void ToggleNavMenu(string leftNav)
+    private void ToggleNavMenu(string leftMenuText)
     {
         collapseNavMenu = !collapseNavMenu;
-        SelectedMenu(leftNav.ToString());
+
+        SelectedMenu(leftMenuText.ToString());
 
     }
 
