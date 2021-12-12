@@ -9,7 +9,7 @@
         <h5 class="card-title">DMSP</h5>
         <EditForm Model="@dmsp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
             <DataAnnotationsValidator />
-            <ValidationSummary />
+             
             <div class="form-group">
                 <label for="exampleFormControlInput1">Dmsp Type</label>
                 <InputSelect @bind-Value="dmsp.DmspType" class="form-control">
