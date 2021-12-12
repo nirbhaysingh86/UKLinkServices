@@ -1,0 +1,25 @@
+﻿@if (MsgType == "success")
+{
+    <div class="alert alert-success" role="alert">
+        @SuccessMsg
+    </div>
+}
+@if (MsgType == "error" || MsgType == "validation")
+{
+    <div class="alert alert-danger" role="alert">
+        @SuccessMsg
+    </div>
+}
+@if (MsgType == "info")
+{
+    <div class="alert alert-primary" role="alert">
+        @SuccessMsg
+    </div>
+}
+@code {
+    [Parameter]
+    public string SuccessMsg { get; set; }
+    [Parameter]
+    public string MsgType { get; set; }
+
+}

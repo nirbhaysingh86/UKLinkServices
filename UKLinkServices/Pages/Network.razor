@@ -1,10 +1,63 @@
 ﻿@page "/network"
+@using Microsoft.Extensions.Logging
+@inject ILogger<Network> Logger
+@inject NavigationManager NavigationManager
+<ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
 
-<h1>Hello, world!</h1>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Network</h5>
+        <EditForm Model="@network" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Network Type</label>
+                <InputSelect @bind-Value="network.NetworkType" class="form-control">
+                    <option value="">Select classification ...</option>
+                    <option value="AirTel">AirTel</option>
+                    <option value="AT&T">AT&T</option>
+                    <option value="Lyca">LaycaMobile</option>
+                </InputSelect>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Network Description</label>
+                <InputTextArea Id="body" Class="form-control" @bind-Value="@network.NetworkDesc"></InputTextArea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
 
-Welcome to @Title
+        </EditForm>
 
- @code{
-     [Parameter]
-     public string Title { get; set; }
- }
+    </div>
+</div>
+@code{
+
+    private string currentUrl;
+    private Models.Network network = new();
+    string message = "Network page loaded!";
+    string messageType = "info";
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.Uri;
+    }
+    private void HandleValidSubmit()
+    {
+        try
+        {
+            Logger.LogInformation("HandleValidSubmit called");
+            message = "Successfully created network details.";
+            messageType = "success";
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            message = ex.ToString();
+            messageType = "error";
+        }
+    }
+
+    protected void HandleInvalidSubmit()
+    {
+        messageType = "validation";
+        message = DateTime.Now + " Handle invalid submit";
+    }
+}

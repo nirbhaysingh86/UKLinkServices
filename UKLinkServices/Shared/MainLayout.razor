@@ -11,8 +11,8 @@
             <UKLinkHeader filterleftNavs="@filterleftNavs"></UKLinkHeader>
         </div>
         <div class="content px-4">
-            <Role roleDatas="@roleDatas" RoleChange="@RoleChange"></Role>
             @Body
+            <Role roleDatas="@roleDatas" RoleChange="@RoleChange"></Role>
         </div>
         <div class="content px-4">
             <Footer></Footer>
@@ -23,10 +23,11 @@
 </div>
 @code {
     private bool collapseNavMenu = true;
-    private string selectedLeftNav = "Home";
+    private string selectedLeftNav;
     public List<LeftNavMenu> store;
     private List<LeftNavMenu> leftNavs;
     private RoleData[] roleDatas;
+    
 
     [Parameter]
     public List<LeftNavMenu> filterleftNavs { get; set; }
@@ -51,9 +52,9 @@
     {
         foreach (var leftNav in filterleftNavs)
         {
-            if (initialLoad && leftNav.menuName=="Home")
+            if (initialLoad && leftNav.menuName == "Home")
             {
-                 leftNav.BreadcrumbclassName = "completed";
+                leftNav.BreadcrumbclassName = "completed";
             }
             else if (selectedLeftNav == leftNav.menuName)
             {
@@ -64,11 +65,13 @@
                 leftNav.BreadcrumbclassName = "";
             }
         }
+
         return filterleftNavs;
     }
 
     void RoleChange(string selectedroleId)
     {
+
         if (!string.IsNullOrWhiteSpace(selectedroleId))
         {
             if (store == null)
@@ -78,7 +81,8 @@
                 for (var i = 0; i < leftNavs.Count; i++)
                 {
                     var menu = leftNavs[i];
-                    store.Add(new LeftNavMenu { menuName = menu.menuName, RoleId = menu.RoleId, className = menu.className, href = menu.href, MenueId = menu.MenueId });
+
+                    store.Add(new LeftNavMenu { menuName = menu.menuName, RoleId = menu.RoleId, className = menu.className, href = menu.href, MenueId = menu.MenueId, BreadcrumbclassName = menu.BreadcrumbclassName });
 
                 }
             }
@@ -90,7 +94,8 @@
                 var menu = store[i];
                 if (Array.IndexOf(menu.RoleId, Convert.ToInt32(selectedroleId)) >= 0)
                 {
-                    filterleftNavs.Add(new LeftNavMenu { menuName = menu.menuName, RoleId = menu.RoleId, className = menu.className, href = menu.href, MenueId = menu.MenueId });
+
+                    filterleftNavs.Add(new LeftNavMenu { menuName = menu.menuName, RoleId = menu.RoleId, className = menu.className, href = menu.href, MenueId = menu.MenueId, BreadcrumbclassName = menu.BreadcrumbclassName });
                 }
 
             }
