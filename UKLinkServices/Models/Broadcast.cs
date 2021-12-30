@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UKLinkServices.Models
 {
-    public class Dmsp
+    public class Broadcast
     {
         [Required]
         public string DmspType { get; set; }

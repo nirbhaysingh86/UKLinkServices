@@ -1,4 +1,4 @@
-﻿@page "/dmsp"
+﻿@page "/broadcast"
 @using Microsoft.Extensions.Logging
 @inject ILogger<DMSP> Logger
 @inject NavigationManager NavigationManager
@@ -6,7 +6,7 @@
  
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">DMSP</h5>
+        <h5 class="card-title">Broadcast</h5>
         <EditForm Model="@dmsp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
             <DataAnnotationsValidator />
              
@@ -31,7 +31,7 @@
 </div>
 @code{
     private string currentUrl;
-    private Models.Dmsp dmsp = new();
+    private Models.Broadcast dmsp = new();
     string message = "Dmsp page loaded!";
     string messageType = "info";
     protected override void OnInitialized()

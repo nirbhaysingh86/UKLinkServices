@@ -9,8 +9,8 @@
 
   {
     "menuid": 2,
-    "href": "dmsp",
-    "menuName": "DMSP",
+    "href": "broadcast",
+    "menuName": "Broadcast",
     "className": "oi oi-info",
     "roleid": [ 1, 2 ]
   },
