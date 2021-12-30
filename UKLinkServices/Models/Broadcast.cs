@@ -19,4 +19,9 @@ namespace UKLinkServices.Models
         public string BroadcastReason { get; set; }
         
     }
+    public class UploadedFile
+    {
+        public string FileName { get; set; }
+        public byte[] FileContent { get; set; }
+    }
 }

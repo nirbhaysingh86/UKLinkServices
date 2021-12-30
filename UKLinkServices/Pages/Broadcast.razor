@@ -2,6 +2,8 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<Broadcast> Logger
 @inject NavigationManager NavigationManager
+ 
+@using System.IO
 <ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
 
 <EditForm Model="@broadcast" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
@@ -93,14 +95,15 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <div class="form-group">
-
-                            <InputTextArea Id="MsgDesc" Class="form-control" @bind-Value="@broadcast.Link"></InputTextArea>
+                            <InputFile OnChange="OnInputFileChange" multiple />
+                            @*<InputFile Id="upload" Class="form-control" @bind-Value="@broadcast.Link" ValueChange="OnChange"></InputFile>*@
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary">Upload File</button>
+                        @*<button type="submit">Upload Selected File(s)</button>*@
+                        <button type="button" @onclick="OnLoad">Upload File</button>
                     </div>
                 </div>
             </div>
@@ -112,15 +115,39 @@
 @code{
     private string currentUrl;
     private Models.Broadcast broadcast = new();
-
+    string Message = "No file(s) selected";
+    IReadOnlyList<IBrowserFile> selectedFiles;
     string message = "Broadcast page loaded!";
     string messageType = "info";
     protected override void OnInitialized()
     {
-        currentUrl = NavigationManager.Uri;
+
         broadcast.details = new Details();
         broadcast.details.Urgent = true;
     }
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        selectedFiles = e.GetMultipleFiles();
+        Message = $"{selectedFiles.Count} file(s) selected";
+        this.StateHasChanged();
+    }
+
+    private async void OnLoad()
+    {
+        foreach (var file in selectedFiles)
+        {
+            Stream stream = file.OpenReadStream();
+            var path = $"D:\\TopGearChallenge\\.Net\\UKLinkServices\\UKLinkServices\\wwwroot\\{file.Name}";
+            FileStream fs = File.Create(path);
+            await stream.CopyToAsync(fs);
+            stream.Close();
+            fs.Close();
+        }
+        Message = $"{selectedFiles.Count} file(s) uploaded on server";
+        this.StateHasChanged();
+    }
+
     private void HandleValidSubmit()
     {
         try
