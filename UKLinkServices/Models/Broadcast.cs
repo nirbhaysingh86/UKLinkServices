@@ -5,12 +5,18 @@ namespace UKLinkServices.Models
 {
     public class Broadcast
     {
+        public Details details { get; set; }
+        public string Link { get; set; }
+    }
+    public class Details
+    {
+        public DateTime? BroadcastDate { get; set; }
         [Required]
-        public string DmspType { get; set; }
-        [Required]
-        [StringLength(200, ErrorMessage = "Identifier too long (16 character limit).")]
-        public string DmspkDesc { get; set; }
-
-         
+        [Range(typeof(bool), "true", "true",
+        ErrorMessage = "This form disallows unapproved ships.")]
+        public bool Urgent { get; set; }
+        public string DeliveryOption { get; set; }
+        public string BroadcastReason { get; set; }
+        
     }
 }

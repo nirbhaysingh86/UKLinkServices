@@ -48,3 +48,24 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 2px solid #64C39B!important;
+    border-radius: 0.25rem;
+}
+.card-header {
+    background-color: #64C39B !important;
+    color: white;
+    padding-left: 9px;
+    padding-right: 9px;
+    
+    padding-bottom: 3px;
+}

@@ -3,40 +3,123 @@
 @inject ILogger<Broadcast> Logger
 @inject NavigationManager NavigationManager
 <ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
- 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Broadcast</h5>
-        <EditForm Model="@broadcast" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
-            <DataAnnotationsValidator />
-             
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Dmsp Type</label>
-                <InputSelect @bind-Value="broadcast.DmspType" class="form-control">
-                    <option value="">Select classification ...</option>
-                    <option value="AirTel">AirTel</option>
-                    <option value="AT&T">AT&T</option>
-                    <option value="Lyca">LaycaMobile</option>
-                </InputSelect>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Dmsp Description</label>
-                <InputTextArea Id="body" Class="form-control" @bind-Value="@broadcast.DmspkDesc"></InputTextArea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
 
-        </EditForm>
-
+<EditForm Model="@broadcast" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+    <DataAnnotationsValidator />
+    <div class="row">
+        <div class="col-sm-2"><div class="card-header">Details</div></div>
     </div>
-</div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    Date
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <InputDate @bind-Value="broadcast.details.BroadcastDate" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    Urgent
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+
+                        <InputCheckbox @bind-Value="broadcast.details.Urgent" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"> <label for="exampleFormControlInput1">Delivery Option</label></div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <InputSelect @bind-Value="broadcast.details.DeliveryOption" class="form-control">
+                            <option value="">-Select-</option>
+                            <option value="AirTel">AirTel</option>
+                            <option value="AT&T">AT&T</option>
+                            <option value="Lyca">LaycaMobile</option>
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="col-sm-3">  <label for="exampleFormControlInput1">Broadcast Reason</label></div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <InputSelect @bind-Value="broadcast.details.BroadcastReason" class="form-control">
+                            <option value="">-Select-</option>
+                            <option value="AirTel">AirTel</option>
+                            <option value="AT&T">AT&T</option>
+                            <option value="Lyca">LaycaMobile</option>
+                        </InputSelect>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"><div class="card-header">Message</div></div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="exampleFormControlTextarea1">Link</label>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="form-group">
+
+                            <InputTextArea Id="MsgDesc" Class="form-control" @bind-Value="@broadcast.Link"></InputTextArea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        You have 100 charchters remaining.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"><div class="card-header">Address request</div></div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="exampleFormControlTextarea1">Upload File -</label>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="form-group">
+
+                            <InputTextArea Id="MsgDesc" Class="form-control" @bind-Value="@broadcast.Link"></InputTextArea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary">Upload File</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</EditForm>
 @code{
     private string currentUrl;
     private Models.Broadcast broadcast = new();
+
     string message = "Broadcast page loaded!";
     string messageType = "info";
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.Uri;
+        broadcast.details = new Details();
+        broadcast.details.Urgent = true;
     }
     private void HandleValidSubmit()
     {
