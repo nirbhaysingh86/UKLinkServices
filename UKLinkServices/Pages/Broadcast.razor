@@ -1,18 +1,18 @@
 ﻿@page "/broadcast"
 @using Microsoft.Extensions.Logging
-@inject ILogger<DMSP> Logger
+@inject ILogger<Broadcast> Logger
 @inject NavigationManager NavigationManager
 <ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
  
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Broadcast</h5>
-        <EditForm Model="@dmsp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+        <EditForm Model="@broadcast" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
             <DataAnnotationsValidator />
              
             <div class="form-group">
                 <label for="exampleFormControlInput1">Dmsp Type</label>
-                <InputSelect @bind-Value="dmsp.DmspType" class="form-control">
+                <InputSelect @bind-Value="broadcast.DmspType" class="form-control">
                     <option value="">Select classification ...</option>
                     <option value="AirTel">AirTel</option>
                     <option value="AT&T">AT&T</option>
@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Dmsp Description</label>
-                <InputTextArea Id="body" Class="form-control" @bind-Value="@dmsp.DmspkDesc"></InputTextArea>
+                <InputTextArea Id="body" Class="form-control" @bind-Value="@broadcast.DmspkDesc"></InputTextArea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -31,8 +31,8 @@
 </div>
 @code{
     private string currentUrl;
-    private Models.Broadcast dmsp = new();
-    string message = "Dmsp page loaded!";
+    private Models.Broadcast broadcast = new();
+    string message = "Broadcast page loaded!";
     string messageType = "info";
     protected override void OnInitialized()
     {
