@@ -83,3 +83,6 @@ a, .btn-link {
 .row-padding{
     padding-top:1px;
 }
+.searchBottom input[type="radio"] {
+    margin: 0 0 0 15px!important;
+}

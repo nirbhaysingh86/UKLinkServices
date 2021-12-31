@@ -1,9 +1,9 @@
-﻿@page "/extract"
+﻿@page "/search"
 @using Microsoft.Extensions.Logging
-@inject ILogger<Extract> Logger
-@inject NavigationManager NavigationManager
+@inject ILogger<Search> Logger
+ 
 <ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
-<EditForm Model="@network" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+<EditForm Model="@search" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="row">
@@ -11,25 +11,20 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Network</h5>
-
             <div class="form-group">
-                <label for="exampleFormControlInput1">Network Type</label>
-                <InputSelect @bind-Value="network.NetworkType" class="form-control">
-                    <option value="">Select classification ...</option>
-                    <option value="AirTel">AirTel</option>
-                    <option value="AT&T">AT&T</option>
-                    <option value="Lyca">LaycaMobile</option>
-                </InputSelect>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <InputRadioGroup @bind-Value="search.SearchType"   >
+                            @foreach (var option in rdOptions)
+                            {
+                            <span class="searchBottom"><InputRadio Value="option"  @onchange="RadioSelection"   /> @option</span>   
+                            }
+                        </InputRadioGroup>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Network Description</label>
-                <InputTextArea Id="body" Class="form-control" @bind-Value="@network.NetworkDesc"></InputTextArea>
-            </div>
-
         </div>
     </div>
-
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
@@ -37,13 +32,26 @@
 @code{
 
     private string currentUrl;
-    private Models.Extract network = new();
-    string message = "Network page loaded!";
+    public string SelectedValue { get; set; } = "AspNetCore";
+    Models.Search search = new Models.Search()
+    {
+        SearchType = "MPRN" // default value
+    };
+    List<string> rdOptions = new List<string> { "MPRN", "Address" };
+    string message = "Search page loaded!";
     string messageType = "";
+
     protected override void OnInitialized()
     {
-        currentUrl = NavigationManager.Uri;
+
     }
+
+    string RadioValue = "aspnetcore";
+    void RadioSelection(ChangeEventArgs args)
+    {
+        RadioValue = args.Value.ToString();
+    }
+
     private void HandleValidSubmit()
     {
         try

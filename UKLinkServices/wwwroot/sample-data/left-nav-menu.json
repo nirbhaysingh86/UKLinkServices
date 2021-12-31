@@ -16,8 +16,8 @@
   },
   {
     "menuid": 3,
-    "href": "extract",
-    "menuName": "Extract",
+    "href": "search",
+    "menuName": "Search",
     "className": "oi oi-rss",
     "roleid": [ 1, 2, 3 ]
   } 
