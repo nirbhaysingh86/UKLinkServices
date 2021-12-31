@@ -147,7 +147,7 @@
             uploadedFile.FileContent = ms.ToArray();
             ms.Close();
 
-            await Http.PostAsJsonAsync
+          var res=  await Http.PostAsJsonAsync
     ("https://localhost:44397/ProductsDetails/Post", uploadedFile);
         }
         Message = $"{selectedFiles.Count} file(s) uploaded on server";
@@ -159,6 +159,7 @@
     {
         try
         {
+            var brd= broadcast;
             Logger.LogInformation("HandleValidSubmit called");
             message = "Successfully created dmsp details.";
             messageType = "success";
