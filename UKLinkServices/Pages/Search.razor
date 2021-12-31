@@ -1,7 +1,8 @@
 ﻿@page "/search"
 @using Microsoft.Extensions.Logging
 @inject ILogger<Search> Logger
- 
+
+
 <ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
 <EditForm Model="@search" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
     <DataAnnotationsValidator />
@@ -14,12 +15,24 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-sm-4">
-                        <InputRadioGroup @bind-Value="search.SearchType"   >
+                        <InputRadioGroup @bind-Value="search.SearchType">
                             @foreach (var option in rdOptions)
                             {
-                            <span class="searchBottom"><InputRadio Value="option"  @onchange="RadioSelection"   /> @option</span>   
+                                <span class="searchBottom"><input checked="@(SelectedValue.Equals(option))" type="radio" value="@option" @onchange="OnChange" /> @option</span>
                             }
                         </InputRadioGroup>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        @if (SelectedValue == "Address")
+                        {
+                            <Address></Address>
+                        }
+                        else
+                        {
+                            <Mprn></Mprn>
+                        }
                     </div>
                 </div>
             </div>
@@ -32,7 +45,7 @@
 @code{
 
     private string currentUrl;
-    public string SelectedValue { get; set; } = "AspNetCore";
+
     Models.Search search = new Models.Search()
     {
         SearchType = "MPRN" // default value
@@ -40,16 +53,16 @@
     List<string> rdOptions = new List<string> { "MPRN", "Address" };
     string message = "Search page loaded!";
     string messageType = "";
-
+    [Parameter]
+    public string SelectedValue { get; set; } = "MPRN";
     protected override void OnInitialized()
     {
 
     }
 
-    string RadioValue = "aspnetcore";
-    void RadioSelection(ChangeEventArgs args)
+    private void OnChange(ChangeEventArgs args)
     {
-        RadioValue = args.Value.ToString();
+        SelectedValue = args.Value.ToString();
     }
 
     private void HandleValidSubmit()

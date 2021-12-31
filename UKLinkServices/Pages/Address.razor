@@ -2,64 +2,51 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<Address> Logger
 @inject NavigationManager NavigationManager
-<ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
-<EditForm Model="@search" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="row">
-        <div class="col-sm-2"><div class="card-header">Search Criteria</div></div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-sm-4">
-                         
-                    </div>
-                </div>
+    <EditForm Model="@search" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row">
+            <div class="col-sm-4">
+                dfg
             </div>
         </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</EditForm>
+    </EditForm>
+    @code{
 
+        private string currentUrl;
 
-@code{
-
-    private string currentUrl;
-
-    Models.Search search = new Models.Search()
-    {
-        SearchType = "MPRN" // default value
-    };
-    List<string> rdOptions = new List<string> { "MPRN", "Address" };
-    string message = "Search page loaded!";
-    string messageType = "";
-
-    protected override void OnInitialized()
-    {
-        currentUrl = NavigationManager.Uri;
-    }
-
-    private void HandleValidSubmit()
-    {
-        try
+        Models.Search search = new Models.Search()
         {
-            Logger.LogInformation("HandleValidSubmit called");
-            message = "Successfully created network details.";
-            messageType = "success";
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            message = ex.ToString();
-            messageType = "error";
-        }
-    }
+            SearchType = "MPRN" // default value
+        };
+        List<string> rdOptions = new List<string> { "MPRN", "Address" };
+        string message = "Search page loaded!";
+        string messageType = "";
 
-    protected void HandleInvalidSubmit()
-    {
-        messageType = "validation";
-        message = DateTime.Now + " Handle invalid submit";
+        protected override void OnInitialized()
+        {
+            currentUrl = NavigationManager.Uri;
+        }
+
+        private void HandleValidSubmit()
+        {
+            try
+            {
+                Logger.LogInformation("HandleValidSubmit called");
+                message = "Successfully created network details.";
+                messageType = "success";
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                message = ex.ToString();
+                messageType = "error";
+            }
+        }
+
+        protected void HandleInvalidSubmit()
+        {
+            messageType = "validation";
+            message = DateTime.Now + " Handle invalid submit";
+        }
     }
-}
