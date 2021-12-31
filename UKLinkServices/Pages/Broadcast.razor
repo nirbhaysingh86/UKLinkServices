@@ -2,8 +2,10 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<Broadcast> Logger
 @inject NavigationManager NavigationManager
- 
+@inject HttpClient Http
 @using System.IO
+@inject HttpClient Http
+
 <ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
 
 <EditForm Model="@broadcast" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
@@ -93,12 +95,33 @@
                     <label for="exampleFormControlTextarea1">Upload File -</label>
                 </div>
                 <div class="col-sm-3">
+
                     <div class="form-group">
-                        <div class="form-group">
-                            <InputFile OnChange="OnInputFileChange" multiple />
-                            @*<InputFile Id="upload" Class="form-control" @bind-Value="@broadcast.Link" ValueChange="OnChange"></InputFile>*@
-                        </div>
+                        <label>File</label>
+                        <InputFile OnChange="OnChooseFile" multiple />
+                        @* Show the value of the _uploaded variable divided to 1024 to show the amount in KB and also we use _fileStream?.Length / 1024 to show the total amount of KBs  *@
+                        <p><span style="color:dodgerblue">@(_uploaded / 1024)KB</span> / @(_fileStream?.Length / 1024)KB</p>
+                        @* Show the percentage of uploaded amount of of the total *@
+                        <p style="color:red">Percentage: @_percentage %</p>
                     </div>
+                    @* Call the SubmitFileAsync in the @onclick event *@
+                    <button type="submit" class="btn btn-success btn-block m-1" @onclick="SubmitFileAsync">Upload</button>
+
+
+
+
+
+
+                    <InputFile OnChange="@OnFileSelection" multiple></InputFile>
+        <div class="row">
+            @foreach (var imgUrl in imgUrls)
+            {
+                <img src="@imgUrl">
+            }
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" @onclick="SaveToServer">Upload To Server</button>
+        </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -119,6 +142,62 @@
     IReadOnlyList<IBrowserFile> selectedFiles;
     string message = "Broadcast page loaded!";
     string messageType = "info";
+    [Inject]
+    public HttpClient Client { get; set; }
+
+    private Stream _fileStream = null;
+    private string _selectedFileName = null;
+
+    public void OnChooseFile(InputFileChangeEventArgs e)
+    {
+        // Get the selected file   
+        var file = e.File;
+
+        // Check if the file is null then return from the method   
+        if (file == null)
+            return;
+
+        // Validate the extension if requried (Client-Side)  
+
+        // Set the value of the stream by calling OpenReadStream and pass the maximum number of bytes allowed because by default it only allows 512KB  
+        // I used the value 5000000 which is about 50MB  
+        using (var stream = file.OpenReadStream(50000000))
+        {
+            _fileStream = stream;
+            _selectedFileName = file.Name;
+        }
+    }
+
+    private long _uploaded = 0;
+    private double _percentage = 0;
+    // The method that will submit the file to the server
+    public async Task SubmitFileAsync()
+    {
+        // Create a mutlipart form data content which will hold the key value of the file that must be of type StreamContent
+        var content = new MultipartFormDataContent();
+
+        // Create an instance of ProgressiveStreamContent that we just created and we will pass the stream of the file for it
+        // and the 40096 which are 40KB per packet and the third argument which as a callback for the OnProgress event (u, p) are u = Uploaded bytes and P is the percentage
+        var streamContent = new ProgressiveStreamContent(_fileStream, 40096, (u, p) =>
+        {
+            // Set the values of the _uploaded & _percentage fields to the value provided from the event
+            _uploaded = u;
+            _percentage = p;
+
+            // Call StateHasChanged() to notify the component about this change to re-render the UI
+            StateHasChanged();
+        });
+
+        // Add the streamContent with the name to the FormContent variable
+        content.Add(
+                        content: streamContent,
+                        name: "\"files\"",
+                        fileName: "asas");
+
+        // Submit the request 
+        var response = await Client.PostAsync("https://localhost:44397/ProductsDetails/Upload", content);
+    }
+
     protected override void OnInitialized()
     {
 
@@ -126,12 +205,46 @@
         broadcast.details.Urgent = true;
     }
 
+
     private void OnInputFileChange(InputFileChangeEventArgs e)
     {
         selectedFiles = e.GetMultipleFiles();
         Message = $"{selectedFiles.Count} file(s) selected";
         this.StateHasChanged();
     }
+
+    List<string> imgUrls = new List<string>();
+    List<FileData> fileData = new List<FileData>();
+    private async Task OnFileSelection(InputFileChangeEventArgs e)
+    {
+        foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
+        {
+            var buffers = new byte[imgFile.Size];
+            await imgFile.OpenReadStream().ReadAsync(buffers);
+            string imageType = imgFile.ContentType;
+            string imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(buffers)}";
+            imgUrls.Add(imgUrl);
+            fileData.Add(new FileData
+            {
+                Data = buffers,
+                FileType = imageType,
+                Size = imgFile.Size 
+            });
+        }
+    }
+
+    private async Task SaveToServer()
+    {
+        if (fileData.Count > 0)
+        {
+            var payload = new SaveFile { Files = fileData };
+            await Http.PostAsJsonAsync("https://localhost:44397/ProductsDetails/SaveToPhysicalLocation", payload);
+        }
+    }
+
+
+
+
 
     private async void OnLoad()
     {
