@@ -30,8 +30,7 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-
-                        <InputCheckbox @bind-Value="broadcast.details.Urgent" class="form-control" />
+                        <InputCheckbox @bind-Value="broadcast.details.Urgent"  />
                     </div>
                 </div>
             </div>
@@ -41,7 +40,7 @@
                     <div class="form-group">
                         <InputSelect @bind-Value="broadcast.details.DeliveryOption" class="form-control">
                             <option value="">-Select-</option>
-                            <option value="AirTel">AirTel</option>
+                            <option value="AirTel">Fedex</option>
                             <option value="AT&T">AT&T</option>
                             <option value="Lyca">LaycaMobile</option>
                         </InputSelect>
@@ -73,7 +72,6 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <div class="form-group">
-
                             <InputTextArea Id="MsgDesc" Class="form-control" @bind-Value="@broadcast.Link"></InputTextArea>
                         </div>
                     </div>
@@ -101,15 +99,18 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        
+
                         <button type="button" @onclick="Upload">Upload File</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-
+    <div class="row btn-row-padding">
+        <div class="col-sm-4"><button type="submit" class="btn btn-primary">Submit</button> 
+         <button type="button" class="btn btn-primary">Back</button></div>
+    </div>
+     
 </EditForm>
 @code{
     private string currentUrl;
