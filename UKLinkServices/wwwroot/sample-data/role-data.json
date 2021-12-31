@@ -2,21 +2,16 @@
   {
     "roleid": 1,
     "role": "Admin",
-    "menuName": [ "dmsp", "network", "shipper" ]
+    "menuName": [ "broadcast", "extract"]
   },
   {
     "roleid": 2,
-    "role": "DMSP",
-    "menuName": [ "dmsp" ]
+    "role": "Broadcast",
+    "menuName": [ "broadcast" ]
   },
   {
     "roleid": 3,
-    "role": "Network Engineer",
-    "menuName": [ "network" ]
-  },
-  {
-    "roleid": 4,
-    "role": "Shipper",
-    "menuName": [ "shipper" ]
-  }
+    "role": "Extract",
+    "menuName": [ "extract" ]
+  } 
 ]

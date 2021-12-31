@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UKLinkServices.Models
 {
-    public class Network
+    public class Extract
     {
         [Required]
         public string NetworkType { get; set; }

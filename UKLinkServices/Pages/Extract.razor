@@ -1,15 +1,18 @@
-﻿@page "/network"
+﻿@page "/extract"
 @using Microsoft.Extensions.Logging
-@inject ILogger<Network> Logger
+@inject ILogger<Extract> Logger
 @inject NavigationManager NavigationManager
 <ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
+<EditForm Model="@network" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row">
+        <div class="col-sm-2"><div class="card-header">Search Criteria</div></div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Network</h5>
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Network</h5>
-        <EditForm Model="@network" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
             <div class="form-group">
                 <label for="exampleFormControlInput1">Network Type</label>
                 <InputSelect @bind-Value="network.NetworkType" class="form-control">
@@ -23,18 +26,20 @@
                 <label for="exampleFormControlTextarea1">Network Description</label>
                 <InputTextArea Id="body" Class="form-control" @bind-Value="@network.NetworkDesc"></InputTextArea>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
 
-        </EditForm>
-
+        </div>
     </div>
-</div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+
 @code{
 
     private string currentUrl;
-    private Models.Network network = new();
+    private Models.Extract network = new();
     string message = "Network page loaded!";
-    string messageType = "info";
+    string messageType = "";
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.Uri;

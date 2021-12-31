@@ -16,16 +16,9 @@
   },
   {
     "menuid": 3,
-    "href": "network",
-    "menuName": "Network",
+    "href": "extract",
+    "menuName": "Extract",
     "className": "oi oi-rss",
     "roleid": [ 1, 2, 3 ]
-  },
-  {
-    "menuid": 4,
-    "href": "shipper",
-    "menuName": "Shipper",
-    "className": "oi oi-shield",
-    "roleid": [ 1, 4 ]
-  }
+  } 
 ]

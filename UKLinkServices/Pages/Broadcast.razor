@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row row-padding">
                 <div class="col-sm-3"> <label for="exampleFormControlInput1">Delivery Option</label></div>
                 <div class="col-sm-3">
                     <div class="form-group">
@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row row-padding">
         <div class="col-sm-2"><div class="card-header">Message</div></div>
     </div>
     <div class="card">
@@ -84,7 +84,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row row-padding">
         <div class="col-sm-2"><div class="card-header">Address request</div></div>
     </div>
     <div class="card">
@@ -118,7 +118,7 @@
     string Message = "No file(s) selected";
     IReadOnlyList<IBrowserFile> selectedFiles;
     string message = "Broadcast page loaded!";
-    string messageType = "info";
+    string messageType = "";
 
     protected override void OnInitialized()
     {

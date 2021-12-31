@@ -66,8 +66,9 @@ a, .btn-link {
     color: white;
     padding-left: 9px;
     padding-right: 9px;
-    
-    padding-bottom: 3px;
+    padding-bottom: 8px;
+    font-weight: bold;
+     
 }
 .btn-primary {
     color: #165bd6;
@@ -78,4 +79,7 @@ a, .btn-link {
 }
 .btn-row-padding{
     padding-top:20px!important;
+}
+.row-padding{
+    padding-top:1px;
 }
