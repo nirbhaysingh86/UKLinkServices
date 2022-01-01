@@ -5,12 +5,9 @@ namespace UKLinkServices.Models
 {
     public class Mprn
     {
-        [Required]
-        public string SearchType { get; set; }
-        [Required]
-        [StringLength(200, ErrorMessage = "Identifier too long (16 character limit).")]
-        public string NetworkDesc { get; set; }
+        public string MeterPointRef { get; set; }
+        public string ExtractReason { get; set; }
 
-         
+
     }
 }

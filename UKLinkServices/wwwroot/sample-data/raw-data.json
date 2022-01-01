@@ -1,0 +1,65 @@
+﻿[
+  {
+    "HouseNumber": "7601",
+    "StreetBuildingName": "FountainHead Apartment",
+    "PrincipalStreet": "Ave S",
+    "City": "Richfield",
+    "PostCode": "55423",
+    "ExtractReason": "Reason1",
+    "MeterPointRef": "MeterPointRef1"
+  },
+  {
+    "HouseNumber": "7602",
+    "StreetBuildingName": "FountainHead Apartment",
+    "PrincipalStreet": "Ave S",
+    "City": "Richfield",
+    "PostCode": "55423",
+    "ExtractReason": "Reason1",
+    "MeterPointRef": "MeterPointRef2"
+  },
+  {
+    "HouseNumber": "7603",
+    "StreetBuildingName": "FountainHead Apartment",
+    "PrincipalStreet": "Ave S",
+    "City": "Richfield",
+    "PostCode": "55423",
+    "ExtractReason": "Reason2",
+    "MeterPointRef": "MeterPointRef1"
+  },
+  {
+    "HouseNumber": "7603",
+    "StreetBuildingName": "FountainHead Apartment",
+    "PrincipalStreet": "Ave S",
+    "City": "Richfield",
+    "PostCode": "55423",
+    "ExtractReason": "Reason3",
+    "MeterPointRef": "MeterPointRef1"
+  },
+  {
+    "HouseNumber": "7605",
+    "StreetBuildingName": "FountainHead Apartment",
+    "PrincipalStreet": "Ave S",
+    "City": "Richfield",
+    "PostCode": "55423",
+    "ExtractReason": "Reason3",
+    "MeterPointRef": "MeterPointRef1"
+  },
+  {
+    "HouseNumber": "7604",
+    "StreetBuildingName": "FountainHead Apartment",
+    "PrincipalStreet": "Ave S",
+    "City": "Richfield",
+    "PostCode": "55423",
+    "ExtractReason": "Reason2",
+    "MeterPointRef": "MeterPointRef1"
+  },
+  {
+    "HouseNumber": "7605",
+    "StreetBuildingName": "FountainHead Apartment",
+    "PrincipalStreet": "Ave S",
+    "City": "Richfield",
+    "PostCode": "55423",
+    "ExtractReason": "Reason2",
+    "MeterPointRef": "MeterPointRef1"
+  }
+]

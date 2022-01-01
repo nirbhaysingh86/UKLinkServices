@@ -1,9 +1,8 @@
 ﻿@page "/search"
 @using Microsoft.Extensions.Logging
 @inject ILogger<Search> Logger
+@inject HttpClient Http
 
-
-<ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
 <EditForm Model="@search" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -13,7 +12,7 @@
     <div class="card">
         <div class="card-body">
             <div class="form-group">
-                <div class="row">
+                <div class="row search-creteria ">
                     <div class="col-sm-4">
                         <InputRadioGroup @bind-Value="search.SearchType">
                             @foreach (var option in rdOptions)
@@ -27,24 +26,119 @@
                     <div class="col-sm-12">
                         @if (SelectedValue == "Address")
                         {
-                            <Address></Address>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    House Number
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <InputText id="name" @bind-Value="search.Address .HouseNumber" class="form-control" />
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    Street/Building Name
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <InputText id="name" @bind-Value="search.Address.StreetBuildingName" class="form-control" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    Principal Street
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <InputText id="name" @bind-Value="search.Address.PrincipalStreet" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    City
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <InputText id="name" @bind-Value="search.Address.City" class="form-control" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    Post Code
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <InputText id="name" @bind-Value="search.Address.PostCode" class="form-control" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    Extract Reason
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <InputSelect @bind-Value="search.Address.ExtractReason" class="form-control">
+                                            <option value="">-Select-</option>
+                                            <option value="Reason1">Reason1</option>
+                                            <option value="Reason2">Reason2</option>
+                                            <option value="Reason3">Reason3</option>
+                                        </InputSelect>
+                                    </div>
+                                </div>
+
+                            </div>
                         }
                         else
                         {
-                            <Mprn></Mprn>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    Meter Point Reference
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <InputText id="name" @bind-Value="search.Mprn.MeterPointRef" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    Extract Reason
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <InputSelect @bind-Value="search.Mprn.ExtractReason" class="form-control">
+                                            <option value="">-Select-</option>
+                                            <option value="Reason1">Reason1</option>
+                                            <option value="Reason2">Reason2</option>
+                                            <option value="Reason3">Reason3</option>
+                                        </InputSelect>
+                                    </div>
+                                </div>
+
+                            </div>
                         }
                     </div>
+
                 </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-4 search-icon"> <button type="submit" class="no-border-btn">Search</button> <span class="oi oi-magnifying-glass"></span> </div>
+
             </div>
         </div>
     </div>
     <div class="row btn-row-padding">
         <div class="col-sm-4">
-             
+
             <button type="button" class="btn btn-primary">Back</button>
         </div>
     </div>
-    
+
 </EditForm>
 
 
@@ -55,15 +149,21 @@
     Models.Search search = new Models.Search()
     {
         SearchType = "MPRN" // default value
+
     };
     List<string> rdOptions = new List<string> { "MPRN", "Address" };
     string message = "Search page loaded!";
     string messageType = "";
+    List<RawData> rawDatas = new List<RawData>();
+    public List<RawData> filterRawdata=new List<RawData>();
+    public List<RawData> store;
     [Parameter]
     public string SelectedValue { get; set; } = "MPRN";
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-
+        search.Mprn = new Models.Mprn();
+        search.Address = new Models.Address();
+        rawDatas = await Http.GetFromJsonAsync<List<RawData>>("sample-data/raw-data.json");
     }
 
     private void OnChange(ChangeEventArgs args)
@@ -78,6 +178,7 @@
             Logger.LogInformation("HandleValidSubmit called");
             message = "Successfully created network details.";
             messageType = "success";
+            rawDatasFilter();
             StateHasChanged();
         }
         catch (Exception ex)
@@ -85,6 +186,38 @@
             message = ex.ToString();
             messageType = "error";
         }
+    }
+    private List<RawData> rawDatasFilter()
+    {
+        // rawDatas
+
+        if (store == null)
+        {
+            store = new List<RawData>();
+
+            for (var i = 0; i < rawDatas.Count; i++)
+            {
+                var rawData = rawDatas[i];
+
+                store.Add(new RawData { HouseNumber = rawData.HouseNumber, StreetBuildingName = rawData.StreetBuildingName, PrincipalStreet = rawData.PrincipalStreet, City = rawData.City, ExtractReason = rawData.ExtractReason, MeterPointRef = rawData.MeterPointRef,PostCode=rawData.PostCode });
+
+            }
+        }
+        filterRawdata.Clear();
+        filterRawdata.TrimExcess();
+
+        for (var i = 0; i < store.Count; i++)
+        {
+            var rawData = store[i];
+            if (rawData.HouseNumber==search.Address.HouseNumber)
+            {
+
+                filterRawdata.Add(new RawData { HouseNumber = rawData.HouseNumber, StreetBuildingName = rawData.StreetBuildingName, PrincipalStreet = rawData.PrincipalStreet, City = rawData.City, ExtractReason = rawData.ExtractReason, MeterPointRef = rawData.MeterPointRef, PostCode = rawData.PostCode });
+            }
+
+        }
+        StateHasChanged();
+        return filterRawdata;
     }
 
     protected void HandleInvalidSubmit()

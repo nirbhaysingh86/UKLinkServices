@@ -86,3 +86,14 @@ a, .btn-link {
 .searchBottom input[type="radio"] {
     margin: 0 0 0 15px!important;
 }
+.search-creteria {
+    padding-bottom: 30px;
+}
+.search-icon {
+    text-align:  right;
+    cursor:pointer!important;
+}
+.no-border-btn {
+    border: none !important;
+    outline: none !important;
+}
