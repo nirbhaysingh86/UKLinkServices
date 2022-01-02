@@ -140,8 +140,59 @@
     </div>
 
 </EditForm>
+<div class="table-responsive-md blazor-grid-header-padding">
+    <table class="table ">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">House Number</th>
+                <th scope="col">Street/Building Name</th>
+                <th scope="col">Principal Street</th>
+                <th scope="col">City</th>
+                <th scope="col">Post Code</th>
+                <th scope="col">Extract Reason</th>
 
+            </tr>
+        </thead>
+        @foreach (var rawdata in filterRawdata)
+        {
+            <tr>
+                <td align="center">
 
+                    <span style="color: black">
+                        @rawdata.HouseNumber
+                    </span>
+
+                </td>
+                <td align="center">
+
+                    <span style="color:black">
+                        @rawdata.StreetBuildingName
+                    </span>
+                </td>
+                <td align="center">
+                    <span style="color: black">
+                        @rawdata.PrincipalStreet
+                    </span>
+                </td>
+                <td align="center">
+                    <span style="color: black">
+                        @rawdata.City
+                    </span>
+                </td>
+                <td align="center">
+                    <span style="color: black">
+                        @rawdata.PostCode
+                    </span>
+                </td>
+                <td align="center">
+                    <span style="color: black">
+                        @rawdata.ExtractReason
+                    </span>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
 @code{
 
     private string currentUrl;
@@ -155,7 +206,7 @@
     string message = "Search page loaded!";
     string messageType = "";
     List<RawData> rawDatas = new List<RawData>();
-    public List<RawData> filterRawdata=new List<RawData>();
+    public List<RawData> filterRawdata = new List<RawData>();
     public List<RawData> store;
     [Parameter]
     public string SelectedValue { get; set; } = "MPRN";
@@ -164,6 +215,7 @@
         search.Mprn = new Models.Mprn();
         search.Address = new Models.Address();
         rawDatas = await Http.GetFromJsonAsync<List<RawData>>("sample-data/raw-data.json");
+        filterRawdata = rawDatas;
     }
 
     private void OnChange(ChangeEventArgs args)
@@ -199,7 +251,7 @@
             {
                 var rawData = rawDatas[i];
 
-                store.Add(new RawData { HouseNumber = rawData.HouseNumber, StreetBuildingName = rawData.StreetBuildingName, PrincipalStreet = rawData.PrincipalStreet, City = rawData.City, ExtractReason = rawData.ExtractReason, MeterPointRef = rawData.MeterPointRef,PostCode=rawData.PostCode });
+                store.Add(new RawData { HouseNumber = rawData.HouseNumber, StreetBuildingName = rawData.StreetBuildingName, PrincipalStreet = rawData.PrincipalStreet, City = rawData.City, ExtractReason = rawData.ExtractReason, MeterPointRef = rawData.MeterPointRef, PostCode = rawData.PostCode });
 
             }
         }
@@ -209,7 +261,7 @@
         for (var i = 0; i < store.Count; i++)
         {
             var rawData = store[i];
-            if (rawData.HouseNumber==search.Address.HouseNumber)
+            if (rawData.HouseNumber == search.Address.HouseNumber)
             {
 
                 filterRawdata.Add(new RawData { HouseNumber = rawData.HouseNumber, StreetBuildingName = rawData.StreetBuildingName, PrincipalStreet = rawData.PrincipalStreet, City = rawData.City, ExtractReason = rawData.ExtractReason, MeterPointRef = rawData.MeterPointRef, PostCode = rawData.PostCode });
