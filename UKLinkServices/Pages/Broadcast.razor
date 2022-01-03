@@ -5,7 +5,7 @@
 @inject HttpClient Http
 @using System.IO
 @inject HttpClient Http
-
+@using System.Text.RegularExpressions
 
 <ConnonMesage SuccessMsg="@message" MsgType="@messageType"></ConnonMesage>
 
@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <InputCheckbox @bind-Value="broadcast.details.Urgent"  />
+                        <InputCheckbox @bind-Value="broadcast.details.Urgent" />
                     </div>
                 </div>
             </div>
@@ -107,10 +107,12 @@
         </div>
     </div>
     <div class="row btn-row-padding">
-        <div class="col-sm-4"><button type="submit" class="btn btn-primary">Submit</button> 
-         <button type="button" class="btn btn-primary">Back</button></div>
+        <div class="col-sm-4">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-primary">Back</button>
+        </div>
     </div>
-     
+
 </EditForm>
 @code{
     private string currentUrl;
@@ -120,6 +122,8 @@
     string message = "Broadcast page loaded!";
     string messageType = "";
 
+    List<CsvFile> csvFilesData = new List<CsvFile>();
+
     protected override void OnInitialized()
     {
 
@@ -127,11 +131,49 @@
         broadcast.details.Urgent = true;
     }
 
-    private void OnInputFileChange(InputFileChangeEventArgs e)
+    public async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
         selectedFiles = e.GetMultipleFiles();
         Message = $"{selectedFiles.Count} file(s) selected";
+        var singleFile = e.File;
+        Regex regex = new Regex(".+\\.csv", RegexOptions.Compiled);
+        if (!regex.IsMatch(singleFile.Name))
+        {
+            //show error invalidad format file
+        }
+        else
+        {
+            var stream = singleFile.OpenReadStream();
+            MemoryStream ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            stream.Close();
+            var outputFileString = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+            foreach (var item in outputFileString.Split(Environment.NewLine))
+            {
+                if (item != "")
+                {
+                    csvFilesData.Add(new CsvFile { HouseNumber = SplitCSV(item.ToString())[0], StreetBuildingName = SplitCSV(item.ToString())[1], PrincipalStreet = SplitCSV(item.ToString())[2], City = SplitCSV(item.ToString())[3], PostodeOutCode = SplitCSV(item.ToString())[4], PostCodeInCode = SplitCSV(item.ToString())[5] });
+                }
+            }
+        }
         this.StateHasChanged();
+    }
+
+    private string[] SplitCSV(string input)
+    {
+        //Excludes commas within quotes
+        Regex csvSplit = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
+        List<string> list = new List<string>();
+        string curr = null;
+        foreach (Match match in csvSplit.Matches(input))
+        {
+            curr = match.Value;
+            if (0 == curr.Length) list.Add("");
+
+            list.Add(curr.TrimStart(','));
+        }
+
+        return list.ToArray();
     }
 
     private async void Upload()
@@ -147,9 +189,10 @@
             uploadedFile.FileName = file.Name;
             uploadedFile.FileContent = ms.ToArray();
             ms.Close();
-
-          var res=  await Http.PostAsJsonAsync
-    ("https://localhost:44397/ProductsDetails/Post", uploadedFile);
+            //pass this variable to server side
+            // csvFilesData
+            var res = await Http.PostAsJsonAsync
+  ("https://localhost:44397/ProductsDetails/Post", uploadedFile);
         }
         Message = $"{selectedFiles.Count} file(s) uploaded on server";
         this.StateHasChanged();
@@ -160,7 +203,7 @@
     {
         try
         {
-            var brd= broadcast;
+            var brd = broadcast;
             Logger.LogInformation("HandleValidSubmit called");
             message = "Successfully created dmsp details.";
             messageType = "success";
